@@ -5,8 +5,33 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     // variables
+    public float velocidad = 5f;
+    private Animator animator;
 
-    public CharacterController controller;
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+    void Update()
+    {
+        float movimientoHorizontal = Input.GetAxis("Horizontal");
+        float movimientoVertical = Input.GetAxis("Vertical");
+
+        // Calcular la dirección del movimiento
+        Vector3 movimiento = new Vector3(movimientoHorizontal, 0f, movimientoVertical) * velocidad * Time.deltaTime;
+
+
+        transform.Translate(movimiento, Space.Self);
+
+
+        float walk = Mathf.Abs(movimiento.magnitude);
+        walk = Mathf.Clamp01(walk);
+        animator.SetFloat("walk", walk);
+    }
+    
+}
+
+   /* public CharacterController controller;
 
     public float speed = 10f;
     public float gravity = -9.18f;
@@ -56,6 +81,6 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
-    }
+    }*/
 
-}
+
