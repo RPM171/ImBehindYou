@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     // variables
-    public float velocidad = 5f;
+    public float velocidad = 0f;
     private Animator animator;
 
     private void Start()
@@ -17,18 +17,43 @@ public class PlayerMovement : MonoBehaviour
         float movimientoHorizontal = Input.GetAxis("Horizontal");
         float movimientoVertical = Input.GetAxis("Vertical");
 
-        // Calcular la dirección del movimiento
         Vector3 movimiento = new Vector3(movimientoHorizontal, 0f, movimientoVertical) * velocidad * Time.deltaTime;
 
-
         transform.Translate(movimiento, Space.Self);
-
-
-        float walk = Mathf.Abs(movimiento.magnitude);
-        walk = Mathf.Clamp01(walk);
-        animator.SetFloat("walk", walk);
-    }
+        Run(Walk());
+        animator.SetFloat("walk", velocidad);
+    } 
     
+    public void Run(bool walk)
+    {
+        if (Input.GetKey(KeyCode.LeftShift)&& walk ==true)
+        {
+            velocidad = 1f;
+        }
+        else if (walk == true)
+        {
+            velocidad = 0.25f;
+        }
+        else
+        {
+            velocidad = 0;
+        }
+        
+    }
+    public bool Walk()
+    {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            return true;
+        }
+        else
+        {
+            
+            return false;
+        }
+       
+    }
+
 }
 
    /* public CharacterController controller;
